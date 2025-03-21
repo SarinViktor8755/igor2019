@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Igor: Age</title>
+    <link rel="icon" type="image/x-icon" href="icons8.png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #013d42;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
+        .parallax {
+            position: relative;
+            height: 500px;
+            background-image: url('photo_2025.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            z-index: -1;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        h1 {
+            text-align: center;
+            color: white;
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        h1 span {
+            display: inline-block;
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .info {
+            margin-bottom: 20px;
+            text-align: center;
+            width: 100%;
+        }
+        .info p {
+            margin: 10px 0;
+            color: white;
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+        .photo-frame {
+            margin-bottom: 20px;
+            border: 5px solid #ffffff;
+            border-radius: 10px;
+            padding: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .photo-frame img {
+            display: block;
+            border-radius: 5px;
+            max-width: 200px;
+            height: auto;
+            margin: 0 auto;
+        }
+        .sparkle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: sparkleFade 1s ease-out forwards;
+        }
+        @keyframes sparkleFade {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+        .highlight {
+            color: #ffcc00;
+            font-weight: bold;
+        }
+        .emoji {
+            font-size: 1.5em;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+        .progressBarContainer {
+            width: 100%;
+            max-width: 400px;
+            height: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        .progressBar {
+            height: 100%;
+            background-color: #ffcc00;
+            width: 0%;
+            border-radius: 10px;
+            transition: width 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎉<span>Igor</span>🎉</h1>
+        <div class="info">
+            <div class="photo-frame">
+                <img src="photo_2025.jpg" alt="Igor's Photo">
+            </div>
+            <p id="age"></p>
+            <p id="nextBirthday"></p>
+            <div class="progressBarContainer">
+                <div id="progressBarYear" class="progressBar"></div>
+            </div>
+            <p id="fiveYears"></p>
+            <div class="progressBarContainer">
+                <div id="progressBar5" class="progressBar"></div>
+            </div>
+            <p id="tenYears"></p>
+            <div class="progressBarContainer">
+                <div id="progressBar10" class="progressBar"></div>
+            </div>
+            <p id="eighteenYears"></p>
+            <div class="progressBarContainer">
+                <div id="progressBar18" class="progressBar"></div>
+            </div>
+            <p id="schoolTime"></p>
+            <div class="progressBarContainer">
+                <div id="progressBarSchool" class="progressBar"></div>
+            </div>
+            <!-- New block for retirement -->
+            <p id="retirement"></p>
+            <div class="progressBarContainer">
+                <div id="progressBarRetirement" class="progressBar"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Firework effect
+        document.addEventListener('mousemove', (event) => {
+            const sparkle = document.createElement('div');
+            sparkle.classList.add('sparkle');
+            sparkle.style.left = `${event.pageX}px`;
+            sparkle.style.top = `${event.pageY}px`;
+            document.body.appendChild(sparkle);
+            sparkle.addEventListener('animationend', () => {
+                sparkle.remove();
+            });
+        });
+
+        // Child's birth date
+        const birthDate = new Date('2019-09-23T15:15:00');
+
+        // Function to calculate age
+        function calculateAge(birthDate) {
+            const now = new Date();
+            let years = now.getFullYear() - birthDate.getFullYear();
+            let months = now.getMonth() - birthDate.getMonth();
+            let days = now.getDate() - birthDate.getDate();
+            let hours = now.getHours() - birthDate.getHours();
+            let minutes = now.getMinutes() - birthDate.getMinutes();
+            let seconds = now.getSeconds() - birthDate.getSeconds();
+            if (minutes < 0) {
+                hours--;
+                minutes += 60;
+            }
+            if (hours < 0) {
+                days--;
+                hours += 24;
+            }
+            if (days < 0) {
+                months--;
+                days += new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+            }
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
+            return { years, months, days, hours, minutes, seconds };
+        }
+
+        // Function to calculate days until next birthday
+        function daysUntilNextBirthday(birthDate) {
+            const now = new Date();
+            const nextBirthday = new Date(now.getFullYear(), birthDate.getMonth(), birthDate.getDate());
+            if (nextBirthday < now) {
+                nextBirthday.setFullYear(now.getFullYear() + 1);
+            }
+            const diffTime = nextBirthday - now;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays;
+        }
+
+        // Function to calculate days until a certain age
+        function daysUntilAge(birthDate, targetAge) {
+            const targetDate = new Date(birthDate);
+            targetDate.setFullYear(birthDate.getFullYear() + targetAge);
+            const now = new Date();
+            const diffTime = targetDate - now;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays;
+        }
+
+        // Function to calculate time until school
+        function daysUntilSchool(birthDate) {
+            const schoolStartDate = new Date(birthDate.getFullYear() + 7, 8, 1); // September 1st, when they turn 7
+            const now = new Date();
+            if (now > schoolStartDate) {
+                schoolStartDate.setFullYear(schoolStartDate.getFullYear() + 1);
+            }
+            const diffTime = schoolStartDate - now;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays;
+        }
+
+        // Function to calculate days until retirement
+        function daysUntilRetirement(birthDate) {
+            const retirementAge = 67; // Retirement age
+            const retirementDate = new Date(birthDate);
+            retirementDate.setFullYear(birthDate.getFullYear() + retirementAge);
+            const now = new Date();
+            const diffTime = retirementDate - now;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays;
+        }
+
+        // Function to calculate current year progress
+        function calculateYearProgress(birthDate) {
+            const now = new Date();
+            const lastBirthday = new Date(now.getFullYear(), birthDate.getMonth(), birthDate.getDate());
+            if (lastBirthday > now) {
+                lastBirthday.setFullYear(now.getFullYear() - 1);
+            }
+            const nextBirthday = new Date(lastBirthday);
+            nextBirthday.setFullYear(lastBirthday.getFullYear() + 1);
+            const totalTime = nextBirthday - lastBirthday;
+            const elapsedTime = now - lastBirthday;
+            const progress = elapsedTime / totalTime;
+            return progress;
+        }
+
+        // Function to calculate progress until a certain age
+        function calculateProgress(birthDate, targetAge) {
+            const now = new Date();
+            const targetDate = new Date(birthDate);
+            targetDate.setFullYear(birthDate.getFullYear() + targetAge);
+            const totalTime = targetDate - birthDate;
+            const elapsedTime = now - birthDate;
+            const progress = Math.min(elapsedTime / totalTime, 1); // Limit progress to 100%
+            return progress;
+        }
+
+        // Function to calculate progress until school
+        function calculateSchoolProgress(birthDate) {
+            const now = new Date();
+            const schoolStartDate = new Date(birthDate.getFullYear() + 7, 8, 1); // September 1st, when they turn 7
+            const totalTime = schoolStartDate - birthDate;
+            const elapsedTime = now - birthDate;
+            const progress = Math.min(elapsedTime / totalTime, 1); // Limit progress to 100%
+            return progress;
+        }
+
+        // Function to calculate progress until retirement
+        function calculateRetirementProgress(birthDate) {
+            const now = new Date();
+            const retirementAge = 60;
+            const retirementDate = new Date(birthDate);
+            retirementDate.setFullYear(birthDate.getFullYear() + retirementAge);
+            const totalTime = retirementDate - birthDate;
+            const elapsedTime = now - birthDate;
+            const progress = Math.min(elapsedTime / totalTime, 1); // Limit progress to 100%
+            return progress;
+        }
+
+        // Function to update information and progress bars
+        function updateInfo() {
+            const age = calculateAge(birthDate);
+            document.getElementById('age').innerHTML = `<span class="emoji">👶</span> Child's age: <span class="highlight"><br>${age.years} years, ${age.months} months, ${age.days} days</span><br>${age.hours} hours, ${age.minutes} minutes, ${age.seconds} sec`;
+            const nextBirthday = daysUntilNextBirthday(birthDate);
+            document.getElementById('nextBirthday').innerHTML = `<span class="emoji">🎂</span> Until next birthday: <span class="highlight">${nextBirthday} days</span>`;
+            const fiveYears = daysUntilAge(birthDate, 5);
+            document.getElementById('fiveYears').innerHTML = `<span class="emoji">🎈</span> Until 5th birthday: <span class="highlight">${fiveYears} days</span>`;
+            const tenYears = daysUntilAge(birthDate, 10);
+            document.getElementById('tenYears').innerHTML = `<span class="emoji">🌟</span> Until 10th birthday: <span class="highlight">${tenYears} days</span>`;
+            const eighteenYears = daysUntilAge(birthDate, 18);
+            document.getElementById('eighteenYears').innerHTML = `<span class="emoji">🎉</span> Until 18th birthday: <span class="highlight">${eighteenYears} days</span>`;
+            const schoolTime = daysUntilSchool(birthDate);
+            document.getElementById('schoolTime').innerHTML = `<span class="emoji">📚</span> Until school: <span class="highlight">${schoolTime} days</span>`;
+            
+            // New block for retirement
+            const retirement = daysUntilRetirement(birthDate);
+            document.getElementById('retirement').innerHTML = `<span class="emoji">👵</span> Until retirement: <span class="highlight">${retirement} days</span>`;
+            
+            // Update progress bars
+            const yearProgress = calculateYearProgress(birthDate);
+            const progress5 = calculateProgress(birthDate, 5);
+            const progress10 = calculateProgress(birthDate, 10);
+            const progress18 = calculateProgress(birthDate, 18);
+            const progressSchool = calculateSchoolProgress(birthDate);
+            const progressRetirement = calculateRetirementProgress(birthDate);
+            
+            document.getElementById('progressBarYear').style.width = `${yearProgress * 100}%`;
+            document.getElementById('progressBar5').style.width = `${progress5 * 100}%`;
+            document.getElementById('progressBar10').style.width = `${progress10 * 100}%`;
+            document.getElementById('progressBar18').style.width = `${progress18 * 100}%`;
+            document.getElementById('progressBarSchool').style.width = `${progressSchool * 100}%`;
+            document.getElementById('progressBarRetirement').style.width = `${progressRetirement * 100}%`;
+        }
+
+        // Update information every 3 seconds
+        setInterval(updateInfo, 3000);
+
+        // Initial information update
+        updateInfo();
+    </script>
+</body>
+</html>
