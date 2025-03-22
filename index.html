@@ -204,11 +204,7 @@
         // Slideshow
         const slideshow = document.getElementById('slideshow');
         const images = [
-            'img/1.jpg',
-            'img/5.jpg',
-            'img/3.jpg',
-            'img/2.jpg',
-            'img/4.jpg'
+            'img/1.jpg'
         ]; // Add paths to your images
 
         // Load images into the slideshow
@@ -236,7 +232,7 @@
         setInterval(showNextImage, 3000);
 
         // Rest of the code for age calculation and progress bars
-        const birthDate = new Date('2025-03-14T10:15:00');
+        const birthDate = new Date('2025-09-23T15:15:0');
 
         function calculateAge(birthDate) {
             const now = new Date();
@@ -286,7 +282,7 @@
         }
 
         function daysUntilSchool(birthDate) {
-            const schoolStartDate = new Date(birthDate.getFullYear() + 7, 8, 1); // September 1, when he turns 7
+            const schoolStartDate = new Date(birthDate.getFullYear() + 6, 8, 1); // September 1, when he turns 7
             const now = new Date();
             if (now > schoolStartDate) {
                 schoolStartDate.setFullYear(schoolStartDate.getFullYear() + 1);
